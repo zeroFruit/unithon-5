@@ -1,0 +1,42 @@
+{
+  "name": "unithon",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./node_modules/babel-cli/bin/babel-node.js server/index.js",
+    "watch": "nodemon --exec node ./node_modules/babel-cli/bin/babel-node.js server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "eslint": "^4.3.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "expect": "^1.20.2",
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0",
+    "supertest": "^3.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
+    "express": "^4.15.3",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
+    "mongodb": "^2.2.30",
+    "mongoose": "^4.11.4",
+    "request": "^2.81.0",
+    "validator": "^8.0.0",
+    "winston": "^2.3.1"
+  },
+  "description": ""
+}
