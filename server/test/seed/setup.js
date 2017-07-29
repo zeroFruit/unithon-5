@@ -25,9 +25,7 @@ const userOneId = new ObjectID();
 
 const users = [{
   _id: userOneId,
-  uid: 'u1',
-  voiceId: 'v1',
-  albums: []
+  uid: 'u1'
 }];
 
 const populateUsers = done => {

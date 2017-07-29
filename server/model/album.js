@@ -13,7 +13,7 @@ AlbumSchema.methods.add = function() {
     .then(() => resolve(album))
     .catch(() => reject())
   );
-}
+};
 
 const Album = mongoose.model('Album', AlbumSchema);
 
