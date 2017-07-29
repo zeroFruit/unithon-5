@@ -23,6 +23,7 @@ const uploadImg = (imgFile, callback) => {
   s3.upload(params, (err, data) => {
     if (err) {
       logger.error('[S3Service/uploadImg]', err);
+      console.log(err);
       return callback(err);
     }
     return callback(null, data);
