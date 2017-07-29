@@ -1,5 +1,6 @@
 import AlbumController from '../controller/album';
 import TextController from '../controller/translate';
+import FCMController from '../controller/fcm';
 
 module.exports = app => {
   app.post('/analysis2',
@@ -7,6 +8,8 @@ module.exports = app => {
     AlbumController.analyzeImgMiddleware,
     TextController.translateTextEndPoint
   );
-
   app.post('/album', AlbumController.addAlbum);
+
+  app.post('/fcm', FCMController.registerUser);
+  app.post('/fcm/alarm', FCMController.sendEmer);
 };

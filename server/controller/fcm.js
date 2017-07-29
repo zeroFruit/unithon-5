@@ -1,74 +1,61 @@
+import _ from 'lodash';
 import { SERVER_KEY } from '../config/FCMPush';
 import moment from 'moment';
-import FCM from 'fcm-node';
-import { mongoose } from '../config/mongodb';
+import _FCM from 'fcm-node';
+import { FCM } from '../model/fcm';
+import logger from '../config/logger';
 
-const fcm = new FCM(SERVER_KEY);
+const fcm = new _FCM(SERVER_KEY);
 
+async function registerUser(req, res) {
+  const { token } = _.pick(req.body, ['token']);
+  const uid = getFCMToken(token);
 
-
-
-function sendEmer(req, res){
-    var uid = req.body.uid;
-
-    pool.getConnection(function(err, connection){
-      if(err){
-        res.send('err');
-      }
-      var query = connection.query('select token from table where uid='+uid, function(err, rows, fields){
-        if(!err){
-          for(var i in rows){
-            var token = rows[i].token;
-            var data=req.body;
-            var message = {
-                to: token,
-                notification: {
-                    title: "Emergency", //title of notification
-                    body: "제가 위험에 빠졌어요. GPS와 사진을 보고 저를 구해주세요!", //content of the notification
-                    sound: "default",
-                    icon: "ic_launcher" //default notification icon
-                },
-                data: data //payload you want to send with your notification
-            };
-            fcm.send(message, function(err, response){
-                if (err) {
-                    console.log("Notification not sent");
-                    res.json({success:false})
-                }
-            });
-          }
-          console.log("긴급메시지를 성공적으로 보냈습니다.");
-          res.json({"result":"success"})
-        }
-
-        else{
-          console.log('err');
-        }
-      });
-      connection.release();
-    });
-};
-
-
-
-  function registerUser(req,res){
-    var token = req.body.token;
-    var uid = moment().format('MMDDmmss') + token.substring(3,7);
-
-    pool.getConnection(function(err, connection){
-      if(err){
-          res.send('err');
-      }
-      else{
-        connection.query('insert into table set?',{"token":token,},
-        function(err, results){
-          connection.release();
-          if(err){
-            if(typeof callback === 'fucntion') callback('err');
-          } else{
-            if(typeof callback === 'function') callback('suc');
-          }
-        }
-      )}
-    })
+  try {
+    await new FCM({ uid, token }).add();
+    return res.json({ message: 'SUCCESS', uid });
+  } catch (err) {
+    logger.error('[controller/fcm]', err);
+    return res.status(500).json({ message: 'SERVER_ERROR' });
+  }
 }
+
+const getFCMToken = token => `${moment().format('MMDDss')}${token.substring(3, 7)}`;
+
+async function sendEmer(req, res) {
+  const { uid } = _.pick(req.body, ['uid']);
+
+  try {
+    const fcms = await FCM.findManyTokensWithUid(uid);
+
+    fcms.forEach(_fcm => {
+      const message = {
+        to: _fcm.token,
+        notification: {
+          title: 'Emergency',
+          body: '제가 위험에 빠졌어요. GPS와 사진을 보고 저를 구해주세요!',
+          sound: 'default',
+          icon: 'ic_launcher'
+        }
+      };
+
+      fcm.send(message, (err, response) => {
+        if (err) {
+          logger.error('[controller/sendEmer]', err);
+          return res.status(500).json({ message: 'SERVER_ERROR' });
+        }
+
+        return res.json({ message: 'SUCCESS' });
+      });
+    });
+  } catch (err) {
+    logger.error('[controller/sendEmer]', err);
+    console.error(err);
+    return res.status(500).json({ message: 'SERVER_ERROR' });
+  }
+}
+
+module.exports = {
+  registerUser,
+  sendEmer
+};
