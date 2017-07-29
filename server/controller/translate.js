@@ -3,10 +3,14 @@ import request from 'request';
 import { NAVER_ROOT_URL, CLIENT_ID, CLIENT_SECRET } from '../config/NAVERTranslate';
 import logger from '../config/logger';
 import { Album } from '../model/album';
+import {
+  addTextWithConfidence
+} from '../helpers';
+
 
 function translateTextEndPoint(req, res) {
   const { captions: { text, confidence } } = req.body.description;
-  
+
   const options = {
     url: NAVER_ROOT_URL,
     form: {
@@ -24,6 +28,7 @@ function translateTextEndPoint(req, res) {
     if (!error && response.statusCode == 200) {
       const jsonBody = JSON.parse(body);
       const translatedText = jsonBody.message.result.translatedText;
+      const suffix = addTextWithConfidence(confidence);
 
       new Album({
         link: req.body.Location,
@@ -31,7 +36,7 @@ function translateTextEndPoint(req, res) {
       }).add()
         .then(() => {
           return res.json({
-            translatedText,
+            translatedText: `${suffix}${translatedText}`,
             url: req.body.Location,
             message: 'SUCCESS'
           });
