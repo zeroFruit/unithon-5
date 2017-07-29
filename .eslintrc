@@ -95,6 +95,7 @@
     "import/no-extraneous-dependencies": 0,
     "global-require": 0,
     "prefer-const": ["error", {"ignoreReadBeforeAssign": true}],
-    "import/first": 0
+    "import/first": 0,
+    "func-names": 0
   }
 }

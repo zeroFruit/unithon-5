@@ -1,5 +1,5 @@
-import Controller from '../controller';
+import AlbumController from '../controller/album';
 
 module.exports = app => {
-  app.get('/', Controller.Helloworld);
+  app.post('/analysis', AlbumController.analyzeImg);
 };
