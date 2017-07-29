@@ -6,9 +6,7 @@ import { Album } from '../model/album';
 
 function translateTextEndPoint(req, res) {
   const { captions: { text, confidence } } = req.body.description;
-
-  console.log('English', text);
-
+  
   const options = {
     url: NAVER_ROOT_URL,
     form: {

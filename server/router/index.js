@@ -9,6 +9,7 @@ module.exports = app => {
     TextController.translateTextEndPoint
   );
   app.post('/album', AlbumController.addAlbum);
+  app.get('/albums', AlbumController.getAlbums);
 
   app.post('/fcm', FCMController.registerUser);
   app.post('/fcm/alarm', FCMController.sendEmer);

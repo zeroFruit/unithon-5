@@ -75,8 +75,21 @@ const addAlbum = (req, res) => {
   });
 };
 
+async function getAlbums(req, res) {
+  const { uid } = _.pick(req.query, ['uid']);
+  try {
+    const albums = await Album.getAlbumsByUid(uid);
+    logger.info('[controller/getAlbums] SUCCESS');
+    return res.json({ message: 'SUCCESS', albums });
+  } catch (err) {
+    logger.error('[controller/getAlbums]', err);
+    return res.status(500).json({ message: 'SERVER_ERROR' });
+  }
+}
+
 module.exports = {
   addAlbumMiddleware,
   analyzeImgMiddleware,
-  addAlbum
+  addAlbum,
+  getAlbums
 };
