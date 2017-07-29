@@ -5,7 +5,6 @@ import logger from '../config/logger';
 import { Album } from '../model/album';
 
 function translateTextEndPoint(req, res) {
-  console.log('Multer body', req.body);
   const { captions: { text, confidence } } = req.body.description;
 
   console.log('English', text);
@@ -35,6 +34,7 @@ function translateTextEndPoint(req, res) {
         .then(() => {
           return res.json({
             translatedText,
+            url: req.body.Location,
             message: 'SUCCESS'
           });
         })
@@ -44,7 +44,7 @@ function translateTextEndPoint(req, res) {
         });
     } else {
       logger.info('[controller/translateTextEndPoint]', error, response.statusCode);
-      return res.status(response.statusCode).json({ message: 'SERVER_ERROR', url: req.body.Location });
+      return res.status(response.statusCode).json({ message: 'SERVER_ERROR' });
     }
   });
 }

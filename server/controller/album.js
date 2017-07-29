@@ -63,7 +63,7 @@ function analyzeImgMiddleware(req, res, next) {
 }
 
 const addAlbum = (req, res) => {
-  const album = _.pick(req.body, ['link', 'uid']);
+  const album = _.pick(req.body, ['imgUrl', 'uid']);
 
   new Album(album).add().then(() => {
     logger.info('[controller/addAlbum] SUCCESS');
