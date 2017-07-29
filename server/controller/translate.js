@@ -31,15 +31,18 @@ function translateTextEndPoint(req, res) {
     if (!error && response.statusCode == 200) {
       const jsonBody = JSON.parse(body);
       const translatedText = jsonBody.message.result;
-
+      console.log('req.body.Location', req.body.Location);
+      console.log('description', translatedText);
       new Album({
         link: req.body.Location,
         description: translatedText
       }).add()
-        .then(() => res.json({
-          translatedText,
-          message: 'SUCCESS'
-        }))
+        .then(() => {
+          return res.json({
+            translatedText,
+            message: 'SUCCESS'
+          });
+        })
         .catch(err => {
           console.log(err);
           logger.error('[controller/translate]', err);

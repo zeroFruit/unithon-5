@@ -9,10 +9,11 @@ const AlbumSchema = new mongoose.Schema({
 AlbumSchema.methods.add = function() {
   const album = this;
 
-  return new Promise((resolve, reject) => album.save()
-    .then(() => resolve(album))
-    .catch(() => reject())
-  );
+  return new Promise((resolve, reject) => {
+    return album.save()
+      .then(() => resolve(album))
+      .catch(() => reject());
+  });
 };
 
 const Album = mongoose.model('Album', AlbumSchema);
