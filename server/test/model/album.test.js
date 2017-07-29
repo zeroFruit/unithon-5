@@ -10,6 +10,7 @@ describe('Album 모델', () => {
 
   it('DB에 앨범 DOC 추가', done => {
     const album = {
+      uid: 'uid1',
       link: 'link',
       description: 'description'
     };
@@ -18,6 +19,7 @@ describe('Album 모델', () => {
       Album.findOne({ link: album.link }).then(_album => {
         expect(_album.link).toEqual('link');
         expect(_album.description).toEqual('description');
+        expect(_album.uid).toEqual('uid1');
         done();
       });
     });

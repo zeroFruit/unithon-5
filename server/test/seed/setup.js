@@ -7,6 +7,7 @@ const albumOneId = new ObjectID();
 
 const albums = [{
   _id: albumOneId,
+  uid: 'uidOne',
   link: 'link',
   description: 'description',
   voiceData: 'voiceData',

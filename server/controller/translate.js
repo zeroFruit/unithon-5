@@ -5,11 +5,10 @@ import logger from '../config/logger';
 import { Album } from '../model/album';
 
 function translateTextEndPoint(req, res) {
-  console.log('translateTextEndPoint Start');
+  console.log('Multer body', req.body);
+  const { captions: { text, confidence } } = req.body.description;
 
-  const { captions: { text } } = req.body.description;
-  console.log('req.body.description', req.body.description);
-  console.log('text', text);
+  console.log('English', text);
 
   const options = {
     url: NAVER_ROOT_URL,
@@ -25,14 +24,10 @@ function translateTextEndPoint(req, res) {
     }
   };
   request.post(options, (error, response, body) => {
-    console.log('error', error);
-    console.log('body', body);
-
     if (!error && response.statusCode == 200) {
       const jsonBody = JSON.parse(body);
-      const translatedText = jsonBody.message.result;
-      console.log('req.body.Location', req.body.Location);
-      console.log('description', translatedText);
+      const translatedText = jsonBody.message.result.translatedText;
+
       new Album({
         link: req.body.Location,
         description: translatedText
@@ -44,7 +39,6 @@ function translateTextEndPoint(req, res) {
           });
         })
         .catch(err => {
-          console.log(err);
           logger.error('[controller/translate]', err);
           res.status(500).json({ message: 'SERVER_ERROR' });
         });

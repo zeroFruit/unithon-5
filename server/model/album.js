@@ -1,6 +1,7 @@
 import { mongoose } from '../config/mongodb';
 
 const AlbumSchema = new mongoose.Schema({
+  uid: String,
   link: String,
   description: String,
   keywords: [String]
