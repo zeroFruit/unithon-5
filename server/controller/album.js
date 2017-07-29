@@ -4,6 +4,7 @@ import formidable from 'formidable';
 import { uploadImg } from '../helpers/S3Service';
 import { MS_ROOT_URL, SUB_KEY } from '../config/MSCognitive';
 import logger from '../config/logger';
+import { Album } from '../model/album';
 
 function addAlbumMiddleware(req, res, next) {
   const form = new formidable.IncomingForm();
@@ -61,7 +62,21 @@ function analyzeImgMiddleware(req, res, next) {
   });
 }
 
+const addAlbum = (req, res) => {
+  const album = _.pick(req.body, ['link', 'uid']);
+
+  new Album(album).add().then(() => {
+    logger.info('[controller/addAlbum] SUCCESS');
+    return res.json({ message: 'SUCCESS' });
+  }).catch(err => {
+    logger.error('[controller/addAlbum]');
+    console.log(err);
+    return res.status(500).json({ message: 'FAIL' });
+  });
+};
+
 module.exports = {
   addAlbumMiddleware,
-  analyzeImgMiddleware
+  analyzeImgMiddleware,
+  addAlbum
 };
