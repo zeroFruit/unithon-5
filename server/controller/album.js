@@ -19,7 +19,7 @@ function addAlbum(req, res) {
         return res.status(500).json({ message: 'SERVER_ERROR' });
       }
       req.body.Location = result.Location;
-      console.log('result', result.Location);
+
       return res.json({ message: 'SUCCESS' });
     });
   });
