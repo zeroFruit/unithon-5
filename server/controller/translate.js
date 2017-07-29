@@ -5,7 +5,7 @@ import logger from '../config/logger';
 import { Album } from '../model/album';
 
 function translateTextEndPoint(req, res) {
-  console.log('body', req.body);
+  console.log('Multer body', req.body);
   const { captions: { text, confidence } } = req.body.description;
 
   console.log('English', text);
