@@ -44,7 +44,7 @@ function translateTextEndPoint(req, res) {
         });
     } else {
       logger.info('[controller/translateTextEndPoint]', error, response.statusCode);
-      return res.status(response.statusCode).json({ message: 'SERVER_ERROR' });
+      return res.status(response.statusCode).json({ message: 'SERVER_ERROR', url: req.body.Location });
     }
   });
 }
