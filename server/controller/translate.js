@@ -1,15 +1,13 @@
 import _ from 'lodash';
 import request from 'request';
-import { uploadImg } from '../helpers/S3Service';
 import { NAVER_ROOT_URL, CLIENT_ID, CLIENT_SECRET } from '../config/NAVERTranslate';
 import logger from '../config/logger';
 
 function translateText(req, res) {
   var query = req.body.text;
-  var api_url = NAVER_ROOT_URL;
   var request = require('request');
   var options = {
-    url: api_url,
+    url: NAVER_ROOT_URL,
     form: {
       source: 'en',
       target: 'ko',
@@ -28,7 +26,7 @@ function translateText(req, res) {
 }
 
 function translateTextEndPoint(req, res) {
-  const { tags, captions: { text } } = req.body.description;
+  const { captions: { text } } = req.body.description;
   const options = {
     url: NAVER_ROOT_URL,
     form: {

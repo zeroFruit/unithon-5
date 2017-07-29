@@ -64,8 +64,8 @@ function analyzeImg(req, res, next) {
     if (err) {
       return res.status(500).json({ message: 'SERVER_ERROR' });
     }
-    const { description: { tags, captions: { text, confidence } } } = body;
-    return res.json({ message: 'SUCCESS', tags, captions: { text, confidence } });
+    const { description: { captions: { text, confidence } } } = body;
+    return res.json({ message: 'SUCCESS', captions: { text, confidence } });
   });
 }
 
@@ -88,12 +88,11 @@ function analyzeImgMiddleware(req, res, next) {
       return res.status(500).json({ message: 'SERVER_ERROR' });
     }
 
-    const { description: { tags, captions } } = body;
+    const { description: { captions } } = body;
     const text = captions[0].text;
     const confidence = captions[0].confidence;
 
     req.body.description = {
-      tags,
       captions: {
         text,
         confidence
