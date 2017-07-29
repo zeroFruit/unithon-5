@@ -34,6 +34,7 @@
     "supertest": "^3.0.0"
   },
   "dependencies": {
+    "apn": "^2.1.5",
     "aws-sdk": "^2.92.0",
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",

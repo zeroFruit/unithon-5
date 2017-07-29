@@ -5,6 +5,10 @@ import { uploadImg } from '../helpers/S3Service';
 import { MS_ROOT_URL, SUB_KEY } from '../config/MSCognitive';
 import logger from '../config/logger';
 import { Album } from '../model/album';
+import {
+  appendTsToDocs,
+  aggregateDocsByTs
+} from '../helpers';
 
 function addAlbumMiddleware(req, res, next) {
   const form = new formidable.IncomingForm();
@@ -63,9 +67,9 @@ function analyzeImgMiddleware(req, res, next) {
 }
 
 const addAlbum = (req, res) => {
-  const album = _.pick(req.body, ['imgUrl', 'uid']);
+  const { imgUrl, uid, translatedText } = _.pick(req.body, ['imgUrl', 'uid', 'translatedText']);
 
-  new Album(album).add().then(() => {
+  new Album({ link: imgUrl, uid, description: translatedText }).add().then(() => {
     logger.info('[controller/addAlbum] SUCCESS');
     return res.json({ message: 'SUCCESS' });
   }).catch(err => {
@@ -79,6 +83,7 @@ async function getAlbums(req, res) {
   const { uid } = _.pick(req.query, ['uid']);
   try {
     const albums = await Album.getAlbumsByUid(uid);
+
     logger.info('[controller/getAlbums] SUCCESS');
     return res.json({ message: 'SUCCESS', albums });
   } catch (err) {

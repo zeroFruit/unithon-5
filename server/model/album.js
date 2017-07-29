@@ -21,7 +21,7 @@ AlbumSchema.statics.getAlbumsByUid = function(uid) {
   const Album = this;
 
   return Album.find({ uid });
-};
+}
 
 const Album = mongoose.model('Album', AlbumSchema);
 
