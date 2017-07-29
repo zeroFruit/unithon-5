@@ -3,6 +3,7 @@ import request from 'request';
 import { uploadImg } from '../helpers/S3Service';
 import { NAVER_ROOT_URL, CLIENT_ID, CLIENT_SECRET } from '../config/NAVERTranslate';
 import logger from '../config/logger';
+import { Album } from '../model/album';
 
 function translateText(req, res) {
   var query = req.body.text;
@@ -47,16 +48,24 @@ function translateTextEndPoint(req, res) {
       const jsonBody = JSON.parse(body);
       const translatedText = jsonBody.message.result;
 
-      return res.json({
-        translatedText,
-        message: 'SUCCESS'
-      });
+      new Album({
+        link:req.body.Location,
+        description: translatedText
+      }).add().then(() => {
+        return res.json({
+          translatedText,
+          message: 'SUCCESS'
+        });
+      })
+
+
     } else {
       logger.info('[controller/translateTextEndPoint]', error, response.statusCode);
       return res.status(response.statusCode).json({ message: 'SERVER_ERROR' });
     }
   });
 }
+
 
 module.exports = {
   translateText,
