@@ -5,7 +5,7 @@ import logger from '../config/logger';
 
 const UserSchema = new mongoose.Schema({
   uid: { type: String },
-  profileId: { type: String },
+  profileId: { type: String }
 });
 
 UserSchema.methods.add = function() {
